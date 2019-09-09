@@ -15,28 +15,37 @@ def spaceman(secret_word):
         display_attempt.append("_")
     playing = True
     while(playing):
-        if(incorrect == 7):
+        if(incorrect == len(secret_word)):
+            playing = False
+        elif is_word_guessed(secret_word, letters_guessed):
+            print("YAY, You won!!!")
             playing = False
         else:
+            print("\n------------------")
             guess = get_letter()
-            letters_guessed.append(guess)
-            is_word_guessed(secret_word, letters_guessed)
+            if guess in letters_guessed:
+                print("you already guessed that: ")
+                guess = get_letter()
             #TODO: check if the letter guess is in the secret word
-            print("\n")
-            print("------Secret word is: " + secret_word + "------")
-            print("------Recent Guess was: " + guess + "------")
-            print(letters_guessed)
-            print("------Incorrect Number: " + str(incorrect))
-
-            #for letters in secret_word:
-            if guess in secret_word:
-                print("Correct")
-                display_attempt.append(guess)
+            elif guess in secret_word:
+                print("You guessed correctly")
+                letters_guessed.append(guess)
+                for i, letter in enumerate(secret_word):
+                    if letter in letters_guessed:
+                        if display_attempt[i] == "_":
+                            display_attempt[i] = guess
             else:
-                print("incorrect")
+                print("your guess was incorrect")
                 incorrect += 1
-            print(''.join(display_attempt))
-    print("Game over, You failed")
+                letters_guessed.append(guess)
+
+            print("guesses so far are: " + str(letters_guessed))
+            print("You have " + str(len(secret_word) - incorrect) + " guesses left")
+            print("Secret word is: " + secret_word)
+            print("your progress is: " + ''.join(display_attempt))
+
+    if (incorrect == len(secret_word)):
+        print("Game over, You failed")
 
 def load_word():
     '''
@@ -51,18 +60,17 @@ def load_word():
 
     words_list = words_list[0].split(' ')
     secret_word = random.choice(words_list)
-    print("initial show of secret: " + secret_word)
+    print("You have " + str(len(secret_word)) + " chances to guess the word.")
     return secret_word
 
 def get_letter():
     letter = input("Guess the next letter: ")
-    if len(letter) != 1 or not letter.isalpha():
+    while len(letter) != 1 or not letter.isalpha():
         letter = input("Guess is too long or a number, please try again: ")
     return letter
 
 def is_word_guessed(secret_word, letters_guessed):
-    '''
-    A function that checks if all the letters of the secret word have been guessed.
+    '''A function that checks if all the letters of the secret word have been guessed.
     Args:
         secret_word (string): the random word the user is trying to guess.
         letters_guessed (list of strings): list of letters that have been guessed so far.
@@ -72,7 +80,8 @@ def is_word_guessed(secret_word, letters_guessed):
     # TODO: Loop through the letters in the secret_word and check if a letter is not in lettersGuessed
     for letter in secret_word:
         if letter not in letters_guessed:
-            return True
+            return False
+    return True
 
 #These function calls that will start the game
 secret_word = load_word()
