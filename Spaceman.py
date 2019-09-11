@@ -1,6 +1,7 @@
 import random, os, time
 letters_guessed = []
 display_attempt = []
+#http://www.ascii-art.de/ascii/ab/astronaut.txt
 filenames = ["head.txt", "body.txt", "left_arm.txt", "right_arm.txt", "hips.txt", "left_leg.txt", "right_leg.txt", "ground.txt", "flag_pole.txt", "top_flag.txt", "full.txt"]
 frames = []
 
