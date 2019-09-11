@@ -1,6 +1,12 @@
-import random
+import random, os, time
 letters_guessed = []
 display_attempt = []
+filenames = ["head.txt", "body.txt", "left_arm.txt", "right_arm.txt", "hips.txt", "left_leg.txt", "right_leg.txt", "ground.txt", "flag_pole.txt", "top_flag.txt", "full.txt"]
+frames = []
+
+for name in filenames:
+    with open(name, "r", encoding="utf8") as f:
+        frames.append(f.readlines())
 
 def spaceman(secret_word):
     '''A function that controls the game of spaceman. Will start spaceman in the command line.
@@ -16,10 +22,12 @@ def spaceman(secret_word):
     playing = True
     while(playing):
         if(incorrect == len(secret_word)):
-            playing = False
+            print("Game over, You failed")
+            print("The word was: " + secret_word)
+            end_game()
         elif is_word_guessed(secret_word, letters_guessed):
             print("YAY, You won!!!")
-            playing = False
+            end_game()
         else:
             print("\n------------------")
             guess = get_letter()
@@ -35,17 +43,15 @@ def spaceman(secret_word):
                         if display_attempt[i] == "_":
                             display_attempt[i] = guess
             else:
-                print("your guess was incorrect")
+                print("your guess was incorrect \n")
                 incorrect += 1
                 letters_guessed.append(guess)
+                animate(incorrect)
 
-            print("guesses so far are: " + str(letters_guessed))
             print("You have " + str(len(secret_word) - incorrect) + " guesses left")
+            print("guesses so far are: " + str(letters_guessed))
             print("Secret word is: " + secret_word)
             print("your progress is: " + ''.join(display_attempt))
-
-    if (incorrect == len(secret_word)):
-        print("Game over, You failed")
 
 def load_word():
     '''
@@ -67,7 +73,7 @@ def get_letter():
     letter = input("Guess the next letter: ")
     while len(letter) != 1 or not letter.isalpha():
         letter = input("Guess is too long or a number, please try again: ")
-    return letter
+    return letter.lower()
 
 def is_word_guessed(secret_word, letters_guessed):
     '''A function that checks if all the letters of the secret word have been guessed.
@@ -82,6 +88,22 @@ def is_word_guessed(secret_word, letters_guessed):
         if letter not in letters_guessed:
             return False
     return True
+
+def end_game():
+    play = input("If you'd like to play again press any key, otherwise press (Q) to quit.  ")
+    if (play.upper() == "Q"):
+        playing = False
+    else :
+        playing = True
+
+#animation provied by https://www.youtube.com/watch?v=JavJqJHLo_M
+def animate(incorrect):
+    display_frame = frames[0: incorrect]
+    for frame in display_frame:
+        print ("".join(frame))
+        time.sleep(0.5)
+        os.system('clear')
+    print("")
 
 #These function calls that will start the game
 secret_word = load_word()
