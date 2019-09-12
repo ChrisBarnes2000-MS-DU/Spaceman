@@ -25,33 +25,35 @@ def spaceman(secret_word):
         if(incorrect == len(secret_word)):
             print("Game over, You failed")
             print("The word was: " + secret_word)
-            end_game()
+            playing = end_game()
+            incorrect = 0
         elif is_word_guessed(secret_word, letters_guessed):
             print("YAY, You won!!!")
-            end_game()
+            animate(11)
+            playing = end_game()
         else:
             print("\n------------------")
             guess = get_letter()
             if guess in letters_guessed:
-                print("you already guessed that: ")
+                print("\nyou already guessed that: ")
                 guess = get_letter()
             #TODO: check if the letter guess is in the secret word
             elif guess in secret_word:
-                print("You guessed correctly")
+                print("\nYou guessed correctly")
                 letters_guessed.append(guess)
                 for i, letter in enumerate(secret_word):
                     if letter in letters_guessed:
                         if display_attempt[i] == "_":
                             display_attempt[i] = guess
             else:
-                print("your guess was incorrect \n")
+                print("\nyour guess was incorrect \n")
                 incorrect += 1
                 letters_guessed.append(guess)
                 animate(incorrect)
 
             print("You have " + str(len(secret_word) - incorrect) + " guesses left")
             print("guesses so far are: " + str(letters_guessed))
-            print("Secret word is: " + secret_word)
+            #print("Secret word is: " + secret_word)
             print("your progress is: " + ''.join(display_attempt))
 
 def load_word():
@@ -91,19 +93,22 @@ def is_word_guessed(secret_word, letters_guessed):
     return True
 
 def end_game():
-    play = input("If you'd like to play again press any key, otherwise press (Q) to quit.  ")
+    play = input("If you'd like to play again press any key otherwise press (Q) to quit.  ")
     if (play.upper() == "Q"):
-        playing = False
-    else :
-        playing = True
+        return False
+    else:
+        letters_guessed = []
+        display_attempt = []
+        secret_word = load_word()
+        return True
 
 #animation provied by https://www.youtube.com/watch?v=JavJqJHLo_M
 def animate(incorrect):
     display_frame = frames[0: incorrect]
     for frame in display_frame:
-        print ("".join(frame))
-        time.sleep(0.5)
         os.system('clear')
+        print ("".join(frame))
+        time.sleep(0.3)
     print("")
 
 #These function calls that will start the game
