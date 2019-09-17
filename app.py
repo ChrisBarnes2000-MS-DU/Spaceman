@@ -114,3 +114,7 @@ def animate(incorrect):
 #These function calls that will start the game
 secret_word = load_word()
 spaceman(secret_word)
+
+
+def test_is_word_guessed():
+    assert(is_word_guessed("secret", ['s','e','c','r','e','t'])) == True
