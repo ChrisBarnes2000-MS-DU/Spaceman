@@ -112,12 +112,12 @@ def animate(incorrect):
     print("")
 
 #These function calls that will start the game
-secret_word = load_word()
-spaceman(secret_word)
-
+if __name__ == "__main__":
+    secret_word = load_word()
+    spaceman(secret_word)
 
 def test_is_word_guessed():
-    assert(is_word_guessed("secret", ['s','e','c','r','e','t'])) == True
+    assert(is_word_guessed("secret", ['s','e','c','r','e','t'])) == True, "word guessed function doesn't works correctly"
 
 def test_print():
-    assert(print("testing a print statement")) == "testing a print statement"
+    assert not (print("this is a print statement")), "testing a print statement"
