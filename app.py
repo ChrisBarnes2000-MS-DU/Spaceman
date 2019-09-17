@@ -12,8 +12,6 @@ def spaceman(secret_word):
         Args:
           secret_word (string): the secret word to guess.
     '''
-    #TODO: show the player information about the game according to the project spec
-
     #TODO: Ask the player to guess one letter per round and check that it is only one letter
     letters_guessed = []
     display_attempt = []
@@ -28,14 +26,14 @@ def spaceman(secret_word):
             print("Game over, You failed")
             print("The word was: " + secret_word)
             print("\n------------------")
-            #time.sleep(0.3)
-            playing = end_game() 
+            time.sleep(0.3)
+            return
         elif is_word_guessed(secret_word, letters_guessed):
             """If they still have guesses, check if the word is guessed correctly"""
             animate(10)
             print("YAY, You won!!!")
-            #time.sleep(0.3)
-            playing = end_game()
+            time.sleep(0.3)
+            return
         else:
             """If the words not guessed and they still have guesses, play the game"""
             print("\n------------------")
@@ -60,6 +58,7 @@ def spaceman(secret_word):
                 letters_guessed.append(guess)
                 animate(incorrect)
 
+            #TODO: show the player information about the game according to the project spec
             """Prompts to display during game play"""
             print("You have " + str(len(secret_word) - incorrect) + " guesses left")
             print("guesses so far are: " + str(letters_guessed))
@@ -102,15 +101,6 @@ def is_word_guessed(secret_word, letters_guessed):
             return False
     return True
 
-def end_game():
-    play = input("If you'd like to play again press any key otherwise press (Q) to quit.  ")
-    if (play.upper() == "Q"):
-        print("testing quit")
-        return False
-    else:
-        print("testing resart")
-        return True
-        
 #animation provied by https://www.youtube.com/watch?v=JavJqJHLo_M
 def animate(incorrect):
     display_frame = frames[0: incorrect]
@@ -122,8 +112,12 @@ def animate(incorrect):
 
 #These function calls that will start the game
 if __name__ == "__main__":
-    secret_word = load_word()
-    spaceman(secret_word)
+    play = input("Press enter/return to start otherwise press (Q) to quit.  ")
+    while(play.upper() != "Q"):
+        secret_word = load_word()
+        spaceman(secret_word)
+        play = input("If you'd like to play again press any key otherwise press (Q) to quit.  ")
+    print("you quit the game")
 
 def test_is_word_guessed():
     assert(is_word_guessed("secret", ['s','e','c','r','e','t'])) == True, "word guessed function doesn't works correctly"
