@@ -1,6 +1,4 @@
 import random, os, time
-letters_guessed = []
-display_attempt = []
 #http://www.ascii-art.de/ascii/ab/astronaut.txt
 filenames = ["head.txt", "body.txt", "left_arm.txt", "right_arm.txt", "hips.txt", "left_leg.txt", "right_leg.txt", "ground.txt", "flag_pole.txt", "top_flag.txt", "full.txt"]
 frames = []
@@ -17,28 +15,38 @@ def spaceman(secret_word):
     #TODO: show the player information about the game according to the project spec
 
     #TODO: Ask the player to guess one letter per round and check that it is only one letter
+    letters_guessed = []
+    display_attempt = []
     incorrect = 0
     for i in range(len(secret_word)):
         display_attempt.append("_")
     playing = True
     while(playing):
         if(incorrect == len(secret_word)):
+            """Check if the user has ran out of guesses and go into ending the game"""
+            print("\n------------------")
             print("Game over, You failed")
             print("The word was: " + secret_word)
-            playing = end_game()
-            incorrect = 0
+            print("\n------------------")
+            #time.sleep(0.3)
+            playing = end_game() 
         elif is_word_guessed(secret_word, letters_guessed):
+            """If they still have guesses, check if the word is guessed correctly"""
+            animate(10)
             print("YAY, You won!!!")
-            animate(11)
+            #time.sleep(0.3)
             playing = end_game()
         else:
+            """If the words not guessed and they still have guesses, play the game"""
             print("\n------------------")
             guess = get_letter()
             if guess in letters_guessed:
+                """If they already guessed a letter prompt that they did and get a new input"""
                 print("\nyou already guessed that: ")
                 guess = get_letter()
             #TODO: check if the letter guess is in the secret word
             elif guess in secret_word:
+                """If the input is a new letter check if its part of the secret word and append it to the proper lists"""
                 print("\nYou guessed correctly")
                 letters_guessed.append(guess)
                 for i, letter in enumerate(secret_word):
@@ -46,11 +54,13 @@ def spaceman(secret_word):
                         if display_attempt[i] == "_":
                             display_attempt[i] = guess
             else:
+                """If guess not in secret word increment number of incorrect and add the letter to guessed letters"""
                 print("\nyour guess was incorrect \n")
                 incorrect += 1
                 letters_guessed.append(guess)
                 animate(incorrect)
 
+            """Prompts to display during game play"""
             print("You have " + str(len(secret_word) - incorrect) + " guesses left")
             print("guesses so far are: " + str(letters_guessed))
             #print("Secret word is: " + secret_word)
@@ -95,13 +105,12 @@ def is_word_guessed(secret_word, letters_guessed):
 def end_game():
     play = input("If you'd like to play again press any key otherwise press (Q) to quit.  ")
     if (play.upper() == "Q"):
+        print("testing quit")
         return False
     else:
-        letters_guessed = []
-        display_attempt = []
-        secret_word = load_word()
+        print("testing resart")
         return True
-
+        
 #animation provied by https://www.youtube.com/watch?v=JavJqJHLo_M
 def animate(incorrect):
     display_frame = frames[0: incorrect]
