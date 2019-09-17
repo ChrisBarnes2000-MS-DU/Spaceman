@@ -122,8 +122,8 @@ if __name__ == "__main__":
 def test_is_word_guessed():
     assert(is_word_guessed("secret", ['s','e','c','r','e','t'])) == True, "word guessed function doesn't works correctly"
 
-def test_print():
-    assert not (print("this is a print statement")), "testing a print statement"
+def test_is_word_guessed_2():
+    assert(is_word_guessed("secret", ['s','e','c','m','p','t'])) == False, "word guessed function doesn't works correctly"
 
 def test_animate():
     assert not (animate(10)), "animate testing didn't work"
