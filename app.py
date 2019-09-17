@@ -118,3 +118,6 @@ spaceman(secret_word)
 
 def test_is_word_guessed():
     assert(is_word_guessed("secret", ['s','e','c','r','e','t'])) == True
+
+def test_print():
+    assert(print("testing a print statement")) == "testing a print statement"
