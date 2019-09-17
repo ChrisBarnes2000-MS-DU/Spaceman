@@ -121,3 +121,6 @@ def test_is_word_guessed():
 
 def test_print():
     assert not (print("this is a print statement")), "testing a print statement"
+
+def test_animate():
+    assert not (animate(10)), "animate testing didn't work"
