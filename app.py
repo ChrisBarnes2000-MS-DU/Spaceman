@@ -1,4 +1,6 @@
 import random, os, time
+import unittest
+
 #http://www.ascii-art.de/ascii/ab/astronaut.txt
 filenames = ["head.txt", "body.txt", "left_arm.txt", "right_arm.txt", "hips.txt", "left_leg.txt", "right_leg.txt", "ground.txt", "flag_pole.txt", "top_flag.txt", "full.txt"]
 frames = []
@@ -10,7 +12,7 @@ for name in filenames:
 def spaceman(secret_word):
     '''A function that controls the game of spaceman. Will start spaceman in the command line.
         Args:
-          secret_word (string): the secret word to guess.
+        secret_word (string): the secret word to guess.
     '''
     #TODO: Ask the player to guess one letter per round and check that it is only one letter
     letters_guessed = []
@@ -70,7 +72,7 @@ def load_word():
     A function that reads a text file of words and randomly selects one to use as the secret word
         from the list.
     Returns: 
-           string: The secret word to be used in the spaceman guessing game
+        string: The secret word to be used in the spaceman guessing game
     '''
     f = open('words.txt', 'r')
     words_list = f.readlines()
@@ -110,20 +112,36 @@ def animate(incorrect):
         time.sleep(0.3)
     print("")
 
-#These function calls that will start the game
-if __name__ == "__main__":
-    play = input("Press enter/return to start otherwise press (Q) to quit.  ")
+def playgame(play):
     while(play.upper() != "Q"):
         secret_word = load_word()
         spaceman(secret_word)
         play = input("If you'd like to play again press any key otherwise press (Q) to quit.  ")
-    print("you quit the game")
+    stop = "you quit the game"
+    print(stop)
+    return stop
 
-def test_is_word_guessed():
-    assert(is_word_guessed("secret", ['s','e','c','r','e','t'])) == True, "word guessed function doesn't works correctly"
+#These function calls that will start the game
+if __name__ == "__main__":
+    play = input("Press enter/return to start otherwise press (Q) to quit.  ")
+    playgame(play)
 
-def test_is_word_guessed_2():
-    assert(is_word_guessed("secret", ['s','e','c','m','p','t'])) == False, "word guessed function doesn't works correctly"
 
-def test_animate():
-    assert not (animate(10)), "animate testing didn't work"
+
+"""------Start of testing------"""
+class testing_functions(unittest.TestCase):
+    def test_is_word_guessed(self):
+        self.assertEqual(is_word_guessed("secret", ['s','e','c','r','e','t']), True), "word guessed function doesn't works correctly"
+
+    def test_is_word_guessed_2(self):
+        self.assertEqual(is_word_guessed("secret", ['s','e','c','m','p','t']), False), "word guessed function doesn't works correctly"
+    
+    def test_playgame(self):
+        assert(playgame("Q") == "you quit the game")
+    
+    def test_animate(self):
+        self.assertNotEqual(animate(10), True)
+
+# run the tests
+if __name__ == '__main__':
+    unittest.main()
